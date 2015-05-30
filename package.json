@@ -14,7 +14,8 @@
     "metadata",
     "scraping",
     "crawling",
-    "schedule"
+    "schedule",
+    "cron"
   ],
   "author": "Alex Langberg",
   "license": "MIT",
