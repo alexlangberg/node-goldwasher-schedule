@@ -76,11 +76,11 @@ These options will be applied to all targets that do not explicitly define them 
 ### callback
 The last parameter is a callback function that will be called every time new data is collected according to the schedule. It receives 4 parameters:
 
-```error``` - the usual error object, if an error has occured.
-```results``` - the results from goldwasher.
-```target``` - the target the results has been collected form.
-```response``` - the response from goldwasher-needle.
-```body``` - the raw body from goldwasher-needle.
+1. ```error``` - the usual error object, if an error has occured.
+2. ```results``` - the results from goldwasher.
+3. ```target``` - the target the results has been collected form.
+4. ```response``` - the response from goldwasher-needle.
+5. ```body``` - the raw body from goldwasher-needle.
 
 Example:
 ```javascript
@@ -91,6 +91,20 @@ var processResults = function(error, results, target, response, body) {
 
 ## Example
 ```javascript
+var goldwasher = require('goldwasher');
+require('goldwasher-schedule');
+
+// declare google.com a target
+var targets = [
+  {
+    url: 'https://google.com'
+  }
+];
+
+// set up the schedule
+goldwasher.schedule.setup(targets, function(error, results) {
+    console.log(results);
+}).start();
 ```
 
 ## Advanced example
