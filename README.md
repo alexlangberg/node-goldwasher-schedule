@@ -29,7 +29,9 @@ goldwasher.start();
 goldwasher.stop();
 ```
 
-## Targets
+## Parameters
+
+### Targets
 The first parameter required by the setup function is an array of targets. An example:
 ```javascript
 [
@@ -44,14 +46,14 @@ The first parameter required by the setup function is an array of targets. An ex
 ```
 
 ```url``` is the only required parameter.
-```rule``` is the schedule rule for [node-schedule](https://www.npmjs.org/package/node-schedule). In thise case, 3 times a minute when second equals any of the three values.
+```rule``` is the schedule rule for [node-schedule](https://www.npmjs.org/package/node-schedule). In this case, 3 times a minute when second equals any of the three values (defaults to ```second: 1```, e.g. once a minute).
 ```goldwasher``` is an object of custom [goldwasher](https://www.npmjs.org/package/goldwasher) options for this target.
 
 Additionally, all other options used by [goldwasher-needle](https://www.npmjs.org/package/goldwasher-needle) can be passed along, such as ```needle```, ```goldwasherNeedle``` and ```retry```. Have a look at their respective doc pages for [goldwasher](https://www.npmjs.org/package/goldwasher), [needle](https://www.npmjs.org/package/needle) and [retry](https://www.npmjs.org/package/retry) for options available.
 
 If no other options than ```url``` are set in the target, the defaults provided by the options parameter, explained below, will be used.
 
-## Options
+### Options
 Options can be optionally passed in as the second parameter. It can contain the default values for targets. For instance:
 
 ```javascript
@@ -69,7 +71,23 @@ var options = {
 }
 ```
 
-These options will be applied to all targets that do not explicitly define them themselves.
+These options will be applied to all targets that do not explicitly define them themselves. Note that if no rule is provided, it defaults to ```second: 1```, e.g. once a minute.
+
+### callback
+The last parameter is a callback function that will be called every time new data is collected according to the schedule. It receives 4 parameters:
+
+```error``` - the usual error object, if an error has occured.
+```results``` - the results from goldwasher.
+```target``` - the target the results has been collected form.
+```response``` - the response from goldwasher-needle.
+```body``` - the raw body from goldwasher-needle.
+
+Example:
+```javascript
+var processResults = function(error, results, target, response, body) {
+  console.log(results);
+};
+```
 
 ## Example
 ```javascript
@@ -77,4 +95,41 @@ These options will be applied to all targets that do not explicitly define them 
 
 ## Advanced example
 ```javascript
+var goldwasher = require('goldwasher');
+require('goldwasher-schedule');
+
+// first will use default options below, second has custom options
+var targets = [
+  {
+    url: 'https://google.com'
+  },
+  {
+    url: 'https://github.com',
+    rule: { second: [15, 35, 55] },
+    goldwasher: {
+      selector: 'h1'
+    }
+  }
+];
+
+// default options
+var options = {
+  rule: { second: [1, 10, 20, 30, 40, 50] }
+};
+
+// function that will receive the results
+var processResults = function(error, results) {
+  console.log(results);
+};
+
+// set up the schedule
+goldwasher.schedule.setup(targets, options, processResults);
+
+// start the schedule
+goldwasher.schedule.start();
+
+// stop the schedule after 60 seconds
+setTimeout(function() {
+  goldwasher.schedule.stop();
+}, 60000);
 ```
