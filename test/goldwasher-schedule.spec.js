@@ -20,6 +20,9 @@ var options = {
   },
   goldwasherNeedle: {
     disallowHeader: 'x-goldwasher-version'
+  },
+  retry: {
+    retries: 0
   }
 };
 
