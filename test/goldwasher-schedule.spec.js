@@ -80,7 +80,6 @@ describe('running', function() {
 
   it('runs and stops', function(done) {
     goldwasher.schedule.setup(targets, options, function(error, results) {
-      console.log(error);
       results.length.should.be.greaterThan(0);
       goldwasher.schedule.stop();
       done();
