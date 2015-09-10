@@ -1,7 +1,6 @@
 'use strict';
 
-var goldwasher = require('goldwasher');
-require('./lib/goldwasher-schedule');
+var gs = require('./lib/goldwasher-schedule');
 
 // first will use default options below, second has custom options
 var targets = [
@@ -28,12 +27,12 @@ var processResults = function(error, results) {
 };
 
 // set up the schedule
-goldwasher.schedule.setup(targets, options, processResults);
+gs.setup(targets, options, processResults);
 
 // start the schedule
-goldwasher.schedule.start();
+gs.start();
 
 // stop the schedule after 60 seconds
 setTimeout(function() {
-  goldwasher.schedule.stop();
+  gs.stop();
 }, 60000);

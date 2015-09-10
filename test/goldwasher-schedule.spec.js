@@ -5,8 +5,7 @@ var chai = require('chai');
 chai.use(require('chai-things'));
 var should = chai.should();
 var sinon = require('sinon');
-var goldwasher = require('goldwasher');
-require('../lib/goldwasher-schedule');
+var gs = require('../lib/goldwasher-schedule');
 
 var options = {
   schedule: {
@@ -44,33 +43,27 @@ after(function() {
 
 describe('initialization', function() {
 
-  it('loads', function(done) {
-    goldwasher.should.have.property('needle');
-    goldwasher.should.have.property('schedule');
-    done();
-  });
-
   it('loads without options', function(done) {
-    goldwasher.schedule.setup(targets, function() {
+    gs.setup(targets, function() {
     });
 
     done();
   });
 
   it('accepts options', function(done) {
-    goldwasher.schedule.setup(targets, options, function() {
+    gs.setup(targets, options, function() {
     });
 
     done();
   });
 
   it('passes down options', function(done) {
-    goldwasher.schedule.setup(targets, options, function() {
+    gs.setup(targets, options, function() {
     });
 
-    goldwasher.schedule.options.should.have.property('goldwasher');
-    goldwasher.schedule.options.should.have.property('needle');
-    goldwasher.schedule.options.should.have.property('goldwasherNeedle');
+    gs.options.should.have.property('goldwasher');
+    gs.options.should.have.property('needle');
+    gs.options.should.have.property('goldwasherNeedle');
     done();
   });
 
@@ -79,13 +72,13 @@ describe('initialization', function() {
 describe('running', function() {
 
   it('runs and stops', function(done) {
-    goldwasher.schedule.setup(targets, options, function(error, results) {
+    gs.setup(targets, options, function(error, results) {
       results.length.should.be.greaterThan(0);
-      goldwasher.schedule.stop();
+      gs.stop();
       done();
     });
 
-    goldwasher.schedule.start();
+    gs.start();
     clock.tick(61000);
   });
 
@@ -97,29 +90,29 @@ describe('running', function() {
       }
     ];
 
-    goldwasher.schedule.setup(
+    gs.setup(
       targets,
       options,
       function(error, results, target) {
         target.rule.second.should.equal(2);
         results.length.should.be.greaterThan(0);
-        goldwasher.schedule.stop();
+        gs.stop();
         done();
       });
 
-    goldwasher.schedule.start();
+    gs.start();
     clock.tick(61000);
   });
 
   it('returns error on goldwasher-needle failure', function(done) {
     var targets = [{url: 'foo'}];
-    goldwasher.schedule.setup(targets, options, function(error, results) {
+    gs.setup(targets, options, function(error, results) {
       should.exist(error);
-      goldwasher.schedule.stop();
+      gs.stop();
       done();
     });
 
-    goldwasher.schedule.start();
+    gs.start();
     clock.tick(61000);
   });
 

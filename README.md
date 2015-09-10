@@ -22,11 +22,10 @@ npm install goldwasher
 ## Usage
 
 ```javascript
-var goldwasher = require('goldwasher');
-require('goldwasher-schedule');
-goldwasher.schedule.setup(targets, options, callback);
-goldwasher.start();
-goldwasher.stop();
+var gs = require('goldwasher-schedule');
+gs.setup(targets, options, callback);
+gs.start();
+gs.stop();
 ```
 
 ## Parameters
@@ -91,8 +90,7 @@ var processResults = function(error, results, target, response, body) {
 
 ## Example
 ```javascript
-var goldwasher = require('goldwasher');
-require('goldwasher-schedule');
+var gs = require('goldwasher-schedule');
 
 // declare google.com a target
 var targets = [
@@ -102,15 +100,14 @@ var targets = [
 ];
 
 // set up the schedule
-goldwasher.schedule.setup(targets, function(error, results) {
+gs.setup(targets, function(error, results) {
     console.log(results);
 }).start();
 ```
 
 ## Advanced example
 ```javascript
-var goldwasher = require('goldwasher');
-require('goldwasher-schedule');
+var gs = require('goldwasher-schedule');
 
 // first will use default options below, second has custom options
 var targets = [
@@ -137,13 +134,13 @@ var processResults = function(error, results) {
 };
 
 // set up the schedule
-goldwasher.schedule.setup(targets, options, processResults);
+gs.setup(targets, options, processResults);
 
 // start the schedule
-goldwasher.schedule.start();
+gs.start();
 
 // stop the schedule after 60 seconds
 setTimeout(function() {
-  goldwasher.schedule.stop();
+  gs.stop();
 }, 60000);
 ```
