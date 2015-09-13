@@ -1,3 +1,9 @@
+# 3.0.0 (2015-30-05)
+
+## Breaking changes
+
+-- Change from singleton to factory. ```require``` will now work differently. See example in README.
+
 # 2.0.0 (2015-30-05)
 
 ## Breaking changes

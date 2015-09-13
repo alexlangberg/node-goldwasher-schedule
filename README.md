@@ -14,16 +14,12 @@ Plugin for [goldwasher](https://www.npmjs.org/package/goldwasher), using [node-s
 ```
 npm install goldwasher-schedule
 ```
-If you haven't already downloaded [goldwasher](https://www.npmjs.org/package/goldwasher), you need to install this too, to run the example:
-```
-npm install goldwasher
-```
 
 ## Usage
 
 ```javascript
-var gs = require('goldwasher-schedule');
-gs.setup(targets, options, callback);
+var goldwasher = require('goldwasher-schedule');
+var gs = goldwasher(targets, options, callback);
 gs.start();
 gs.stop();
 ```
@@ -100,14 +96,14 @@ var targets = [
 ];
 
 // set up the schedule
-gs.setup(targets, function(error, results) {
+gs(targets, function(error, results) {
     console.log(results);
 }).start();
 ```
 
 ## Advanced example
 ```javascript
-var gs = require('goldwasher-schedule');
+var goldwasher = require('goldwasher-schedule');
 
 // first will use default options below, second has custom options
 var targets = [
@@ -134,7 +130,7 @@ var processResults = function(error, results) {
 };
 
 // set up the schedule
-gs.setup(targets, options, processResults);
+var gs = goldwasher(targets, options, processResults);
 
 // start the schedule
 gs.start();

@@ -5,7 +5,7 @@ var chai = require('chai');
 chai.use(require('chai-things'));
 var should = chai.should();
 var sinon = require('sinon');
-var gs = require('../lib/goldwasher-schedule');
+var goldwasher = require('../lib/goldwasher-schedule');
 
 var options = {
   schedule: {
@@ -44,21 +44,21 @@ after(function() {
 describe('initialization', function() {
 
   it('loads without options', function(done) {
-    gs.setup(targets, function() {
+    goldwasher(targets, function() {
     });
 
     done();
   });
 
   it('accepts options', function(done) {
-    gs.setup(targets, options, function() {
+    goldwasher(targets, options, function() {
     });
 
     done();
   });
 
   it('passes down options', function(done) {
-    gs.setup(targets, options, function() {
+    var gs = goldwasher(targets, options, function() {
     });
 
     gs.options.should.have.property('goldwasher');
@@ -72,7 +72,7 @@ describe('initialization', function() {
 describe('running', function() {
 
   it('runs and stops', function(done) {
-    gs.setup(targets, options, function(error, results) {
+    var gs = goldwasher(targets, options, function(error, results) {
       results.length.should.be.greaterThan(0);
       gs.stop();
       done();
@@ -90,7 +90,7 @@ describe('running', function() {
       }
     ];
 
-    gs.setup(
+    var gs = goldwasher(
       targets,
       options,
       function(error, results, target) {
@@ -106,7 +106,7 @@ describe('running', function() {
 
   it('returns error on goldwasher-needle failure', function(done) {
     var targets = [{url: 'foo'}];
-    gs.setup(targets, options, function(error, results) {
+    var gs = goldwasher(targets, options, function(error, results) {
       should.exist(error);
       gs.stop();
       done();

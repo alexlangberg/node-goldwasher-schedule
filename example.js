@@ -1,6 +1,6 @@
 'use strict';
 
-var gs = require('./lib/goldwasher-schedule');
+var goldwasher = require('./lib/goldwasher-schedule');
 
 // first will use default options below, second has custom options
 var targets = [
@@ -27,7 +27,7 @@ var processResults = function(error, results) {
 };
 
 // set up the schedule
-gs.setup(targets, options, processResults);
+var gs = goldwasher(targets, options, processResults);
 
 // start the schedule
 gs.start();
