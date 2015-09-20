@@ -19,7 +19,7 @@ npm install goldwasher-schedule
 
 ```javascript
 var goldwasher = require('goldwasher-schedule');
-var gs = goldwasher(targets, options, callback);
+var gs = goldwasher.setup(targets, options, callback);
 gs.start();
 gs.stop();
 ```
@@ -96,7 +96,7 @@ var targets = [
 ];
 
 // set up the schedule
-gs(targets, function(error, results) {
+gs.setup(targets, function(error, results) {
     console.log(results);
 }).start();
 ```
@@ -130,7 +130,7 @@ var processResults = function(error, results) {
 };
 
 // set up the schedule
-var gs = goldwasher(targets, options, processResults);
+var gs = goldwasher.setup(targets, options, processResults);
 
 // start the schedule
 gs.start();
