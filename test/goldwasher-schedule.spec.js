@@ -107,6 +107,7 @@ describe('running', function() {
   it('returns error on goldwasher-needle failure', function(done) {
     var targets = [{url: 'foo'}];
     var gs = goldwasher.setup(targets, options, function(error, results) {
+      targets[0].url.should.equal(results);
       should.exist(error);
       gs.stop();
       done();
