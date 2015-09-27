@@ -49,7 +49,7 @@
     "sinon": "^1.17.0"
   },
   "dependencies": {
-    "goldwasher-needle": "^2.0.3",
+    "goldwasher-needle": "^2.0.5",
     "node-schedule": "^0.2.7",
     "ramda": "^0.17.1"
   }
