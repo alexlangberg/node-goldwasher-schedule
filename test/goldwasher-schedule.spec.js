@@ -44,21 +44,21 @@ after(function() {
 describe('initialization', function() {
 
   it('loads without options', function(done) {
-    goldwasher.setup(targets, function() {
+    goldwasher(targets, function() {
     });
 
     done();
   });
 
   it('accepts options', function(done) {
-    goldwasher.setup(targets, options, function() {
+    goldwasher(targets, options, function() {
     });
 
     done();
   });
 
   it('passes down options', function(done) {
-    var gs = goldwasher.setup(targets, options, function() {
+    var gs = goldwasher(targets, options, function() {
     });
 
     gs.options.should.have.property('goldwasher');
@@ -72,7 +72,8 @@ describe('initialization', function() {
 describe('running', function() {
 
   it('runs and stops', function(done) {
-    var gs = goldwasher.setup(targets, options, function(error, results) {
+    var gs = goldwasher(targets, options);
+    gs.on('result', function(results) {
       results.length.should.be.greaterThan(0);
       gs.stop();
       done();
@@ -90,23 +91,31 @@ describe('running', function() {
       }
     ];
 
-    var gs = goldwasher.setup(
-      targets,
-      options,
-      function(error, results, target) {
-        target.rule.second.should.equal(2);
-        results.length.should.be.greaterThan(0);
-        gs.stop();
-        done();
-      });
+    var gs = goldwasher(targets, options);
+    gs.on('result', function(results, response, body, options) {
+      console.log(options);
+      //target.rule.second.should.equal(2);
+      results.length.should.be.greaterThan(0);
+      gs.stop();
+      done();
+    });
 
     gs.start();
     clock.tick(61000);
+    //var gs = goldwasher(
+    //  targets,
+    //  options,
+    //  function(error, results, target) {
+    //    target.rule.second.should.equal(2);
+    //    results.length.should.be.greaterThan(0);
+    //    gs.stop();
+    //    done();
+    //  });
   });
 
   it('returns error on goldwasher-needle failure', function(done) {
     var targets = [{url: 'foo'}];
-    var gs = goldwasher.setup(targets, options, function(error, results) {
+    var gs = goldwasher(targets, options, function(error, results) {
       targets[0].url.should.equal(results.url);
       should.exist(error);
       gs.stop();
