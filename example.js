@@ -21,13 +21,13 @@ var options = {
   rule: { second: [1, 10, 20, 30, 40, 50] }
 };
 
-// function that will receive the results
-var processResults = function(error, results) {
-  console.log(results);
-};
-
 // set up the schedule
-var gs = goldwasher(targets, options, processResults);
+var gs = goldwasher(targets, options);
+
+// receive the results
+gs.on('result', function(results) {
+  console.log(results);
+});
 
 // start the schedule
 gs.start();

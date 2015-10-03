@@ -44,22 +44,17 @@ after(function() {
 describe('initialization', function() {
 
   it('loads without options', function(done) {
-    goldwasher(targets, function() {
-    });
-
+    goldwasher(targets);
     done();
   });
 
   it('accepts options', function(done) {
-    goldwasher(targets, options, function() {
-    });
-
+    goldwasher(targets, options);
     done();
   });
 
   it('passes down options', function(done) {
-    var gs = goldwasher(targets, options, function() {
-    });
+    var gs = goldwasher(targets, options);
 
     gs.options.should.have.property('goldwasher');
     gs.options.should.have.property('needle');
@@ -73,9 +68,16 @@ describe('running', function() {
 
   it('runs and stops', function(done) {
     var gs = goldwasher(targets, options);
+
+    var emitter = sinon.spy(gs, 'emit');
+
     gs.on('result', function(results) {
-      results.length.should.be.greaterThan(0);
       gs.stop();
+      results.length.should.be.greaterThan(0);
+      emitter.getCall(0).args[0].should.equal('start');
+      emitter.getCall(1).args[0].should.equal('running');
+      emitter.getCall(3).args[0].should.equal('result');
+      emitter.getCall(4).args[0].should.equal('stop');
       done();
     });
 
@@ -92,31 +94,24 @@ describe('running', function() {
     ];
 
     var gs = goldwasher(targets, options);
-    gs.on('result', function(results, response, body, options) {
-      console.log(options);
-      //target.rule.second.should.equal(2);
+    gs.on('result', function(results, options) {
+      options.rule.second.should.equal(2);
       results.length.should.be.greaterThan(0);
+      options.start.should.be.greaterThan(0);
+      options.end.should.be.greaterThan(0);
       gs.stop();
       done();
     });
 
     gs.start();
     clock.tick(61000);
-    //var gs = goldwasher(
-    //  targets,
-    //  options,
-    //  function(error, results, target) {
-    //    target.rule.second.should.equal(2);
-    //    results.length.should.be.greaterThan(0);
-    //    gs.stop();
-    //    done();
-    //  });
   });
 
   it('returns error on goldwasher-needle failure', function(done) {
     var targets = [{url: 'foo'}];
-    var gs = goldwasher(targets, options, function(error, results) {
-      targets[0].url.should.equal(results.url);
+    var gs = goldwasher(targets, options);
+    gs.on('error', function(error, options) {
+      targets[0].url.should.equal(options.url);
       should.exist(error);
       gs.stop();
       done();

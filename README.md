@@ -19,7 +19,10 @@ npm install goldwasher-schedule
 
 ```javascript
 var goldwasher = require('goldwasher-schedule');
-var gs = goldwasher.setup(targets, options, callback);
+var gs = goldwasher(targets, options);
+gs.on('result', function(results) {
+  console.log(results);
+});
 gs.start();
 gs.stop();
 ```
@@ -68,21 +71,13 @@ var options = {
 
 These options will be applied to all targets that do not explicitly define them themselves. Note that if no rule is provided, it defaults to ```second: 1```, e.g. once a minute.
 
-### callback
-The last parameter is a callback function that will be called every time new data is collected according to the schedule. It receives 4 parameters:
+### events
+This module is an event emitter, that will emit events on start, stop, run, end and results. The results event will emit:
 
-1. ```error``` - the usual error object, if an error has occured.
-2. ```results``` - the results from goldwasher.
-3. ```target``` - the target the results has been collected form.
-4. ```response``` - the response from goldwasher-needle.
-5. ```body``` - the raw body from goldwasher-needle.
-
-Example:
-```javascript
-var processResults = function(error, results, target, response, body) {
-  console.log(results);
-};
-```
+1. ```results``` - the results from goldwasher.
+2. ```options``` - the options (and target) the results have been collected with.
+3. ```response``` - the response from goldwasher-needle.
+4. ```body``` - the raw body from goldwasher-needle.
 
 ## Example
 ```javascript
@@ -96,9 +91,12 @@ var targets = [
 ];
 
 // set up the schedule
-gs.setup(targets, function(error, results) {
-    console.log(results);
-}).start();
+gs(targets).start();
+
+// receive the results
+gs.on('result', function(results) {
+  console.log(results);
+});
 ```
 
 ## Advanced example
@@ -124,13 +122,13 @@ var options = {
   rule: { second: [1, 10, 20, 30, 40, 50] }
 };
 
-// function that will receive the results
-var processResults = function(error, results) {
-  console.log(results);
-};
-
 // set up the schedule
-var gs = goldwasher.setup(targets, options, processResults);
+var gs = goldwasher(targets, options);
+
+// receive the results
+gs.on('result', function(results) {
+  console.log(results);
+});
 
 // start the schedule
 gs.start();
