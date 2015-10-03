@@ -1,3 +1,9 @@
+# 5.0.0 (2015-10-03)
+
+## Breaking changes
+
+-- Change from callback pattern to event emitter pattern. See example in README.
+
 # 4.0.0 (2015-09-20)
 
 ## Breaking changes
