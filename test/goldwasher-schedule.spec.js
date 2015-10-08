@@ -94,11 +94,11 @@ describe('running', function() {
     ];
 
     var gs = goldwasher(targets, options);
-    gs.on('result', function(results, options) {
+    gs.on('result', function(results, options, timestamps) {
       options.rule.second.should.equal(2);
       results.length.should.be.greaterThan(0);
-      options.start.should.be.greaterThan(0);
-      options.end.should.be.greaterThan(0);
+      timestamps.start.should.be.greaterThan(0);
+      timestamps.end.should.be.greaterThan(0);
       gs.stop();
       done();
     });
@@ -110,8 +110,9 @@ describe('running', function() {
   it('returns error on goldwasher-needle failure', function(done) {
     var targets = [{url: 'foo'}];
     var gs = goldwasher(targets, options);
-    gs.on('error', function(error, options) {
+    gs.on('error', function(error, options, timestamps) {
       targets[0].url.should.equal(options.url);
+      should.exist(timestamps);
       should.exist(error);
       gs.stop();
       done();
