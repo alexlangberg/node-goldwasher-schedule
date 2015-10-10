@@ -1,6 +1,6 @@
 {
   "name": "goldwasher-schedule",
-  "version": "6.0.0",
+  "version": "6.0.1",
   "description": "Scheduled goldwasher requests, using goldwasher-needle and node-schedule.",
   "main": "index.js",
   "scripts": {
